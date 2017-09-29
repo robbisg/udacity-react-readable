@@ -14,7 +14,6 @@ class App extends Component {
   componentDidMount() {
 
     API.getPosts().then((data) => this.setState({variable: data}))
-
   }
 
 

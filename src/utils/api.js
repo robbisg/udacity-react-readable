@@ -1,5 +1,5 @@
 
-const api = "http://localhost:5001"
+const api = "http://localhost:3001"
 
 
 // Generate a unique token for storing your bookshelf data on the backend server.
@@ -86,6 +86,7 @@ export const getPostById = (postId) =>
   fetch(`${api}/posts/${postId}`, { headers })
     .then(res => res.json())
     .then(data => data)
+
 /*
 POST /posts/:id
 USAGE:
@@ -93,7 +94,24 @@ Used for voting on a post
 
 PARAMS:
 option - String: Either "upVote" or "downVote"
+*/
 
+export const votePost = (postId, option) =>
+  fetch(`${api}/posts/${postId}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(
+      {
+        option
+      })
+  }).then(res => res.json())
+    .then(data => data)
+
+
+/*
 PUT /posts/:id
 USAGE:
 Edit the details of an existing post
@@ -101,16 +119,52 @@ Edit the details of an existing post
 PARAMS:
 title - String
 body - String
+*/
 
+export const editPost = (postId, title, body) =>
+  fetch(`${api}/posts/${postId}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(
+      {
+        title,
+        body
+      })
+  }).then(res => res.json())
+
+/*
 DELETE /posts/:id
 USAGE:
 Sets the deleted flag for a post to 'true'.
 Sets the parentDeleted flag for all child comments to 'true'.
+*/
 
+export const deletePost = (postId) =>
+  fetch(`${api}/posts/${postId}`, {
+    method: 'DELETE',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
+
+
+/*
 GET /posts/:id/comments
 USAGE:
 Get all the comments for a single post
+*/
 
+export const getPostComments = (postId) =>
+  fetch(`${api}/posts/${postId}/comments`, { headers })
+    .then(res => res.json())
+    .then(data => data.comments)
+
+
+/*
 POST /comments
 USAGE:
 Add a comment to a post
@@ -121,15 +175,53 @@ timestamp: timestamp. Get this however you want.
 body: String
 owner: String
 parentId: Should match a post id in the database.
+*/
 
+export const addComment = (body, owner, parentId) =>
+  fetch(`${api}/comments`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(
+      { id: Math.random().toString(36).substr(-8),
+        timestamp: Date.now(),
+        body,
+        owner,
+        parentId
+      })
+  }).then(res => res.json())
+    .then(data => data)
+
+/*
 GET /comments/:id
 USAGE:
 Get the details for a single comment
+*/
 
+export const getComment = (commentId) =>
+  fetch(`${api}/comments/${commentId}`, { headers })
+    .then(res => res.json())
+    .then(data => data)
+
+/*
 POST /comments/:id
 USAGE:
 Used for voting on a comment.
+*/
 
+export const voteComment = (commentId) =>
+  fetch(`${api}/comments/${commentId}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
+    .then(data => data)
+
+/*
 PUT /comments/:id
 USAGE:
 Edit the details of an existing comment
@@ -137,42 +229,37 @@ Edit the details of an existing comment
 PARAMS:
 timestamp: timestamp. Get this however you want.
 body: String
-
-DELETE /comments/:id
-USAGE:
-Sets a comment's deleted flag to 'true'
-
 */
 
-
-
-export const get = (bookId) =>
-  fetch(`${api}/books/${bookId}`, { headers })
-    .then(res => res.json())
-    .then(data => data.book)
-
-export const getAll = () =>
-  fetch(`${api}/categories`, { headers })
-    .then(res => res.json())
-    .then(data => data.categories)
-
-export const update = (book, shelf) =>
-  fetch(`${api}/books/${book.id}`, {
+export const editComment = (commentId, body) =>
+  fetch(`${api}/comments/${commentId}`, {
     method: 'PUT',
     headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ shelf })
+    body: JSON.stringify(
+      {
+        timestamp: Date.now(),
+        body,
+      })
   }).then(res => res.json())
 
-export const search = (query, maxResults) =>
-  fetch(`${api}/search`, {
-    method: 'POST',
+/*
+DELETE /comments/:id
+USAGE:
+Sets a comment's deleted flag to 'true'
+
+*/
+export const deleteComment = (commentId) =>
+  fetch(`${api}/comments/${commentId}`, {
+    method: 'DELETE',
     headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ query, maxResults })
+    body: JSON.stringify(
+      {
+        deleted: 'true',
+      })
   }).then(res => res.json())
-    .then(data => data.books)
