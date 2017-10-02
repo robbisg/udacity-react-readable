@@ -1,5 +1,5 @@
 
-const api = "http://localhost:3001"
+const api = "http://localhost:5001"
 
 
 // Generate a unique token for storing your bookshelf data on the backend server.
@@ -161,7 +161,7 @@ Get all the comments for a single post
 export const getPostComments = (postId) =>
   fetch(`${api}/posts/${postId}/comments`, { headers })
     .then(res => res.json())
-    .then(data => data.comments)
+    .then(data => data)
 
 
 /*

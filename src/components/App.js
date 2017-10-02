@@ -1,33 +1,37 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
+import { Route , Link } from 'react-router-dom'
+import PostList from './PostList'
 import '../App.css';
-import * as API from '../utils/api'
+import * as ReadableAPI from '../utils/api'
 
 
 
 class App extends Component {
 
   state = {
-    variable: {}
+    posts: [],
+    categories: [],
+    comments: []
   }
 
   componentDidMount() {
 
-    API.getPosts().then((data) => this.setState({variable: data}))
+    ReadableAPI.getPosts().then((data) => {this.setState({posts: data})})
+    ReadableAPI.getCategories().then((data) => {
+      this.setState({categories: data})
+      console.log(data);
+    })
   }
 
 
   render() {
-    console.log(this.state.variable)
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className="app">
+
+        <Route exact path="/" render={ ({history}) =>
+          <PostList posts={this.state.posts} categories={this.state.categories}/>
+        } />
+
       </div>
     );
   }
