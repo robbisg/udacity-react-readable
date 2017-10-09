@@ -12,7 +12,7 @@ class Home extends Component {
           <Grid>
             <Col xs={12}>
               <Row>
-                  <Category categories={this.props.categories}/>
+                <Category categories={this.props.categories}/>
               </Row>
               <Row>
                 <PostActions />

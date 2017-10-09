@@ -1,7 +1,7 @@
 import { ADD_COMMENT, FETCH_COMMENTS, READ_COMMENT, DELETE_COMMENT, UPDATE_COMMENT } from '../actions/comments'
 import { UPVOTE_COMMENT, DOWNVOTE_COMMENT } from '../actions/comments'
 
-export function commentReducer(state = {}, action) {
+export function comments(state = {comments:[]}, action) {
 
   switch (action.type) {
 

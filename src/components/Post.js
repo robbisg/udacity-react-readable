@@ -72,18 +72,18 @@ export class PostList extends Component {
 export class PostPage extends Component{
 
   state = {
-    post : {}
+    currentPost : {}
   }
 
   componentDidMount() {
-    ReadableAPI.getPostById(this.props.postId).then((data) => {this.setState({post: data})})
+    ReadableAPI.getPostById(this.props.postId).then((r) => r.json()).then((data) => {this.setState({currentPost: data})})
   }
 
   render() {
     return (
       <Row>
         <Col xs={12}>
-          <PostBig post={this.state.post} />
+          <PostBig post={this.state.currentPost} />
           <CommentList postId={this.props.postId}/>
           <AddComment />
         </Col>
@@ -102,6 +102,7 @@ export class PostBig extends Component {
       textAlign: 'center',
       display: 'inline-block',
     };
+
     return (
       <Card>
         <CardText>

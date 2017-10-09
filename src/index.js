@@ -25,9 +25,6 @@ const store = createStore(
   )
 )
 
-console.log(store.getState());
-console.log(store.dispatch(fetchPosts()))
-console.log(store.dispatch(addPost("Prova", "Prova il mio post", "robbisg", "redux")))
 
 ReactDOM.render(
   <Provider store={store}>

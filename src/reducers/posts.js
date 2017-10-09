@@ -1,10 +1,10 @@
 import { ADD_POST, FETCH_POSTS, READ_POST, DELETE_POST, UPDATE_POST, UPVOTE_POST, DOWNVOTE_POST } from '../actions/posts'
 import { IS_LOADING, SERVER_ERROR} from '../actions/posts'
 import { combineReducers } from 'redux'
-import { commentReducer } from './comments'
+import { comments } from './comments'
 
 
-export function loadingReducer (state = {}, action){
+export function loading(state = {}, action){
   switch (action.type){
     case IS_LOADING:
       return Object.assign({}, state, {
@@ -26,7 +26,7 @@ export function loadingReducer (state = {}, action){
 }
 
 
-export function postReducer(state = {}, action) {
+export function posts(state = {posts:[]}, action) {
 
   switch (action.type) {
 
@@ -84,13 +84,8 @@ export function postReducer(state = {}, action) {
         isLoading: false,
         serverError: false,
         ...state,
-        posts: action.data.map((post) => (
-          {
-            [post.id]: {
-              ...post
-            }
-          }
-        ))
+        posts: action.data.map((post) => ({...post}))
+
 
       })
 
@@ -133,7 +128,7 @@ export function postReducer(state = {}, action) {
 
 
 export const reducer = combineReducers({
-  loadingReducer,
-  postReducer,
-  commentReducer
+  loading,
+  posts,
+  comments
 })
