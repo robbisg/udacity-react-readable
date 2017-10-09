@@ -14,7 +14,7 @@ export class CommentList extends Component {
   }
 
   componentDidMount(){
-    ReadableAPI.getPostComments(this.props.postId).then((data) => this.setState({comments: data}))
+    ReadableAPI.getPostComments(this.props.postId).then((res) => res.json()).then((data) => this.setState({comments: data}))
   }
 
   render () {
