@@ -1,51 +1,153 @@
-const ADD_COMMENT = "ADD_COMMENT"
-const addComment = (body, author, postId) => (
-  return {
-    type:ADD_COMMENT,
-    body,
-    user,
-    postId
-  }
-)
+import * as ReadableAPI from '../utils/api'
+import { serverError, isLoading } from './posts'
 
-const DELETE_COMMENT = "DELETE_COMMENT"
-const deleteComment = (commentId) => (
-  return {
-    type: DELETE_COMMENT,
-    commentId,
-    deleted: true
-  }
-)
+export const ADD_COMMENT = "ADD_COMMENT"
+export function addComment(body, owner, parentId) {
 
-const UPDATE_COMMENT = "UPDATE_COMMENT"
-const updateComment = (commentId, body) => (
-  return {
-    type:UPDATE_COMMENT,
-    commentId,
-    body
-  }
-)
+  return function (dispatch) {
 
-const READ_COMMENTS = "READ_COMMENTS"
-const readComments = (postId) => (
-  return {
-    type: READ_COMMENTS,
-    postId
-  }
-)
+    dispatch(isLoading())
 
-const UPVOTE_COMMENT = "UPVOTE_COMMENT"
-const upVoteComment = (commentId) => (
-  return {
-    type: UPVOTE_COMMENT,
-    commentId
-  }
-)
+    return ReadableAPI.addComment(body, owner, parentId)
+      .then(
+        response => response.json(),
+        error => dispatch(serverError())
+      )
+      .then(() =>
+        dispatch(
+          {
+            type:ADD_COMMENT,
+            body,
+            owner,
+            parentId
+          }
 
-const DOWNVOTE_COMMENT = "DOWNVOTE_COMMENT"
-const downVoteComment = (commentId) => (
-  return {
-    type: DOWNVOTE_COMMENT,
-    commentId
+        )
+      )
   }
-)
+}
+
+
+export const DELETE_COMMENT = "DELETE_COMMENT"
+export function deleteComment(commentId) {
+
+  return function (dispatch) {
+
+    dispatch(isLoading())
+
+    return ReadableAPI.deleteComment(commentId)
+      .then(
+        response => response.json(),
+        error => dispatch(serverError())
+      )
+      .then(() =>
+        dispatch(
+          {
+            type: DELETE_COMMENT,
+            commentId: commentId
+          }
+
+        )
+      )
+  }
+}
+
+
+export const UPDATE_COMMENT = "UPDATE_COMMENT"
+export function updateComment(commentId, body) {
+
+  return function (dispatch) {
+
+    dispatch(isLoading())
+
+    return ReadableAPI.editComment(commentId, body)
+      .then(
+        response => response.json(),
+        error => dispatch(serverError())
+      )
+      .then(() =>
+        dispatch(
+          {
+            type: DELETE_COMMENT,
+            commentId,
+            body
+          }
+
+        )
+      )
+  }
+}
+
+
+export const FETCH_COMMENTS = "FETCH_COMMENTS"
+export function fetchComments(postId) {
+
+  return function (dispatch) {
+
+    dispatch(isLoading())
+
+    return ReadableAPI.getPostComments(postId)
+      .then(
+        response => response.json(),
+        error => dispatch(serverError())
+      )
+      .then((data) =>
+        dispatch(
+          {
+            type: FETCH_COMMENTS,
+            data,
+          }
+
+        )
+      )
+  }
+}
+
+
+export const UPVOTE_COMMENT = "UPVOTE_COMMENT"
+export function upVoteComment(commentId) {
+
+  return function (dispatch) {
+
+    dispatch(isLoading())
+
+    return ReadableAPI.voteComment(commentId, "upVote")
+      .then(
+        response => response.json(),
+        error => dispatch(serverError())
+      )
+      .then(() =>
+        dispatch(
+          {
+            type: UPVOTE_COMMENT,
+            commentId
+          }
+
+        )
+      )
+  }
+}
+
+export const DOWNVOTE_COMMENT = "DOWNVOTE_COMMENT"
+export function downVoteComment(commentId) {
+
+  return function (dispatch) {
+
+    dispatch(isLoading())
+
+    return ReadableAPI.voteComment(commentId, "downVote")
+      .then(
+        response => response.json(),
+        error => dispatch(serverError())
+      )
+      .then(() =>
+        dispatch(
+          {
+            type: DOWNVOTE_COMMENT,
+            commentId
+          }
+
+        )
+      )
+  }
+}

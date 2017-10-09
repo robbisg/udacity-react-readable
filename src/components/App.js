@@ -17,7 +17,7 @@ class App extends Component {
 
   componentDidMount() {
 
-    ReadableAPI.getPosts().then((data) => {this.setState({posts: data})})
+    ReadableAPI.getPosts().then((res) => res.json()).then((data) => {this.setState({posts: data})})
     ReadableAPI.getCategories().then((data) => {
       this.setState({categories: data})
       console.log(data);

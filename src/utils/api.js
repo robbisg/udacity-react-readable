@@ -32,8 +32,6 @@ Get all of the posts for a particular category
 
 export const getCategoryPosts = (categoryId) =>
   fetch(`${api}/${categoryId}/posts`, { headers })
-    .then(res => res.json())
-    .then(data => data)
 
 /*
 GET /posts
@@ -43,8 +41,6 @@ Get all of the posts. Useful for the main page when no category is selected.
 
 export const getPosts = () =>
   fetch(`${api}/posts`, { headers })
-    .then(res => res.json())
-    .then(data => data)
 
 /*
 POST /posts
@@ -59,7 +55,7 @@ body - String
 owner - String
 category: Any of the categories listed in categories.js. Feel free to extend this list as you desire.
 */
-export const addPost = (title, body, owner, category) =>
+export const addPost = (title, body, author, category) =>
   fetch(`${api}/posts`, {
     method: 'POST',
     headers: {
@@ -71,11 +67,10 @@ export const addPost = (title, body, owner, category) =>
         timestamp: Date.now(),
         title,
         body,
-        owner,
+        author,
         category
       })
-  }).then(res => res.json())
-    .then(data => data)
+  })
 
 /*
 GET /posts/:id
@@ -84,8 +79,7 @@ Get the details of a single post
 */
 export const getPostById = (postId) =>
   fetch(`${api}/posts/${postId}`, { headers })
-    .then(res => res.json())
-    .then(data => data)
+
 
 /*
 POST /posts/:id
@@ -107,8 +101,7 @@ export const votePost = (postId, option) =>
       {
         option
       })
-  }).then(res => res.json())
-    .then(data => data)
+  })
 
 
 /*
@@ -133,7 +126,7 @@ export const editPost = (postId, title, body) =>
         title,
         body
       })
-  }).then(res => res.json())
+  })
 
 /*
 DELETE /posts/:id
@@ -149,7 +142,7 @@ export const deletePost = (postId) =>
       ...headers,
       'Content-Type': 'application/json'
     }
-  }).then(res => res.json())
+  })
 
 
 /*
@@ -160,8 +153,6 @@ Get all the comments for a single post
 
 export const getPostComments = (postId) =>
   fetch(`${api}/posts/${postId}/comments`, { headers })
-    .then(res => res.json())
-    .then(data => data)
 
 
 /*
@@ -191,8 +182,7 @@ export const addComment = (body, owner, parentId) =>
         owner,
         parentId
       })
-  }).then(res => res.json())
-    .then(data => data)
+  })
 
 /*
 GET /comments/:id
@@ -202,8 +192,7 @@ Get the details for a single comment
 
 export const getComment = (commentId) =>
   fetch(`${api}/comments/${commentId}`, { headers })
-    .then(res => res.json())
-    .then(data => data)
+
 
 /*
 POST /comments/:id
@@ -218,8 +207,7 @@ export const voteComment = (commentId) =>
       ...headers,
       'Content-Type': 'application/json'
     }
-  }).then(res => res.json())
-    .then(data => data)
+  })
 
 /*
 PUT /comments/:id
@@ -243,7 +231,7 @@ export const editComment = (commentId, body) =>
         timestamp: Date.now(),
         body,
       })
-  }).then(res => res.json())
+  })
 
 /*
 DELETE /comments/:id
@@ -262,4 +250,4 @@ export const deleteComment = (commentId) =>
       {
         deleted: 'true',
       })
-  }).then(res => res.json())
+  })
