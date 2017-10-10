@@ -26,7 +26,7 @@ export function loading(state = {}, action){
 }
 
 
-export function posts(state = {posts:[]}, action) {
+export function posts(state = {posts:[], currentPost:{}}, action) {
 
   switch (action.type) {
 
@@ -120,6 +120,17 @@ export function posts(state = {posts:[]}, action) {
           }
         }
       })
+
+    case READ_POST:
+      return Object.assign({}, state, {
+        isLoading: false,
+        serverError: false,
+        ...state,
+        currentPost: {
+          ...action.data
+        }
+      })
+
 
     default:
       return state

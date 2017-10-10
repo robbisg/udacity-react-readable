@@ -22,7 +22,6 @@ export class Category extends Component{
             <h3>Categories</h3>
             <Row>
               <Col xs={6}><CategoryList categories={this.props.categories}/></Col>
-              <Col xs={6}><AddCategory/></Col>
             </Row>
           </Col>
       )

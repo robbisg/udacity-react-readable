@@ -16,7 +16,9 @@ export class PostActions extends Component {
       <Col xs={6}>
         <h3></h3>
         <Row>
-          <FlatButton label="Default" />
+          <FlatButton label="Add Post" />
+          <FlatButton label="Edit Post" />
+          <FlatButton label="Delete Post" />
         </Row>
       </Col>
 
@@ -26,7 +28,7 @@ export class PostActions extends Component {
 
 
 
-export class PostSmall extends Component {
+export class PostCard extends Component {
 
 
   render() {
@@ -60,7 +62,7 @@ export class PostList extends Component {
       return(
         <Col xs={12}>
           {this.props.posts.map((post) => {
-            return <PostSmall post={post} />
+            return <PostCard post={post} />
           })}
         </Col>
       )
@@ -68,56 +70,27 @@ export class PostList extends Component {
     }
 }
 
-
-export class PostPage extends Component{
-
-  state = {
-    currentPost : {}
-  }
-
-  componentDidMount() {
-    ReadableAPI.getPostById(this.props.postId).then((r) => r.json()).then((data) => {this.setState({currentPost: data})})
-  }
-
-  render() {
-    return (
-      <Row>
-        <Col xs={12}>
-          <PostBig post={this.state.currentPost} />
-          <CommentList postId={this.props.postId}/>
-          <AddComment />
-        </Col>
-      </Row>
-    )
-  }
-}
-
-
-export class PostBig extends Component {
+export class PostPage extends Component {
   render (){
-    const style = {
-      height: 100,
-      width: 100,
-      margin: 20,
-      textAlign: 'center',
-      display: 'inline-block',
-    };
+    const post = this.props.post
+    const upVote = this.props.upVote
+    const downVote = this.props.downVote
 
     return (
       <Card>
         <CardText>
           <Row>
             <Col xs={7}>
-              <h2>{this.props.post.title}</h2>
-              <h4>by {this.props.post.author}</h4>
-              <p>{this.props.post.body}</p>
+              <h2>{post.title}</h2>
+              <h4>by {post.author}</h4>
+              <p>{post.body}</p>
             </Col>
-            <Col xs={4} >
-              <Paper style={style} zDepth={1} circle={true}>
-                <IconButton iconClassName="material-icons" tooltip="upVote Post">add</IconButton>
-                <div style={{fontSize: '30px'}}>{this.props.post.voteScore}</div>
-                <IconButton iconClassName="material-icons" tooltip="downVote Post">remove</IconButton>
-              </Paper>
+            <Col xs={4} style={{textAlign: 'center'}}>
+
+                <IconButton iconClassName="material-icons" onClick={upVote(post.id)} >add</IconButton>
+                <div style={{fontSize: '30px'}}>{post.voteScore}</div>
+                <IconButton iconClassName="material-icons" onClick={downVote(post.id)}>remove</IconButton>
+
             </Col>
           </Row>
         </CardText>

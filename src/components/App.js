@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route , Link, withRouter } from 'react-router-dom'
 import Home from './Home'
-import { PostPage } from './Post'
+import PostContainer from './PostContainer'
 import '../App.css';
 import * as ReadableAPI from '../utils/api'
 import { fetchPosts } from '../actions/posts'
@@ -32,8 +32,10 @@ class App extends Component {
           <Home posts={this.props.posts} categories={this.state.categories}/>
         } />
 
-        <Route exact path="/post/:postid" render={ ({match}) => <PostPage postId={match.params.postid} />}/>
-        
+        <Route exact path="/post/:postid" render={ ({match}) =>
+          <PostContainer postId={match.params.postid} />
+        } />
+
       </div>
     );
   }
