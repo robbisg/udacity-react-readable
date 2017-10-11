@@ -17,8 +17,8 @@ class App extends Component {
   }
 
   componentWillMount() {
-    const { dispatch } = this.props
-    dispatch(fetchPosts())
+    this.props.fetchPosts()
+    console.log(this.props)
   }
 
 
@@ -50,13 +50,12 @@ function mapStateToProps ({loading, posts, comments}) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    //fetchPosts: () => dispatch(fetchPosts()),
-    //remove: (data) => dispatch(removeFromCalendar(data))
+    fetchPosts: () => dispatch(fetchPosts()),
   }
 }
 
 export default withRouter(
   connect(
     mapStateToProps,
-    //mapDispatchToProps
+    mapDispatchToProps
 )(App))

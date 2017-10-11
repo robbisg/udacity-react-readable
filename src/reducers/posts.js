@@ -7,37 +7,25 @@ import { arrayToObject } from '../utils/converter'
 
 
 
-export function loading(state = {}, action){
-  switch (action.type){
+export function posts(state = {posts:[], isLoading:false, serverError:false}, action) {
+
+  switch (action.type) {
+
     case IS_LOADING:
       return Object.assign({}, state, {
-        isLoading: true,
-        serverError: false,
+        isLoading: action.isLoading,
         ...state
       })
 
     case SERVER_ERROR:
       return Object.assign({}, state, {
-        isLoading: false,
-        serverError: true,
+        serverError: action.isLoading,
         ...state
       })
-
-    default:
-      return state
-  }
-}
-
-
-export function posts(state = {posts:[], currentPost:{}}, action) {
-
-  switch (action.type) {
 
 
     case ADD_POST:
       return Object.assign({}, state, {
-        isLoading: false,
-        serverError: false,
         ...state,
         posts: {
           ...state.posts,
@@ -51,8 +39,6 @@ export function posts(state = {posts:[], currentPost:{}}, action) {
 
     case DELETE_POST:
       return Object.assign({}, state, {
-        isLoading: false,
-        serverError: false,
         ...state,
         posts: {
           ...state.posts,
@@ -67,8 +53,6 @@ export function posts(state = {posts:[], currentPost:{}}, action) {
 
     case UPDATE_POST:
       return Object.assign({}, state, {
-        isLoading: false,
-        serverError: false,
         ...state,
         posts: {
           ...state.posts,
@@ -84,8 +68,6 @@ export function posts(state = {posts:[], currentPost:{}}, action) {
 
     case FETCH_POSTS:
       return Object.assign({}, state, {
-        isLoading: false,
-        serverError: false,
         ...state,
         posts: arrayToObject(action.data)
 
@@ -94,8 +76,6 @@ export function posts(state = {posts:[], currentPost:{}}, action) {
 
     case UPVOTE_POST:
       return Object.assign({}, state, {
-        isLoading: false,
-        serverError: false,
         ...state,
         posts: {
           ...state.posts,
@@ -110,8 +90,6 @@ export function posts(state = {posts:[], currentPost:{}}, action) {
 
     case DOWNVOTE_POST:
       return Object.assign({}, state, {
-        isLoading: false,
-        serverError: false,
         ...state,
         posts: {
           ...state.posts,
@@ -123,16 +101,6 @@ export function posts(state = {posts:[], currentPost:{}}, action) {
         }
       })
 
-    case READ_POST:
-      return Object.assign({}, state, {
-        isLoading: false,
-        serverError: false,
-        ...state,
-        currentPost: {
-          ...action.data
-        }
-      })
-
 
     default:
       return state
@@ -141,7 +109,6 @@ export function posts(state = {posts:[], currentPost:{}}, action) {
 
 
 export const reducer = combineReducers({
-  loading,
   posts,
   comments
 })

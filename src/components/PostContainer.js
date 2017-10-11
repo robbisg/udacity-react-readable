@@ -2,23 +2,35 @@ import React, { Component } from 'react'
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import CommentContainer from './CommentContainer'
 import { PostPage, PostActions } from './Post'
-import { readPost, downVotePost, upVotePost } from '../actions/posts'
+import { fetchPosts, downVotePost, upVotePost } from '../actions/posts'
 import { Route , Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 class PostContainer extends Component{
 
-  componentDidMount() {
-    this.props.readPost(this.props.postId)
+
+  componentWillMount() {
+
+    this.props.fetchPosts()
     console.log(this.props)
+
+
   }
 
+
   render() {
+    const currentPost = this.props.posts[this.props.postId]
+    console.log(currentPost)
+
+    if (this.props.isLoading) {
+        return <p>Loading…</p>;
+    }
+
     return (
       <Row>
         <Col xs={12}>
           <PostActions />
-          <PostPage post={this.props.currentPost} upVote={this.props.upVotePost} downVote={this.props.downVotePost}/>
+          <PostPage post={currentPost} upVote={this.props.upVotePost} downVote={this.props.downVotePost}/>
           <CommentContainer postId={this.props.postId} />
         </Col>
       </Row>
@@ -29,13 +41,14 @@ class PostContainer extends Component{
 function mapStateToProps ({loading, posts, comments}) {
   console.log(posts)
   return {
-    currentPost: posts.currentPost,
+    posts: posts.posts,
+    isLoading: posts.isLoading
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    readPost: (id) => dispatch(readPost(id)),
+    fetchPosts: () => dispatch(fetchPosts()),
     upVotePost: (id) => dispatch(upVotePost(id)),
     downVotePost: (id) => dispatch(downVotePost(id))
 

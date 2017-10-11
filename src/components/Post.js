@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import FontIcon from 'material-ui/FontIcon';
-import { Grid, Row, Col } from 'react-flexbox-grid';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
+import { Row, Col } from 'react-flexbox-grid';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
-import Paper from 'material-ui/Paper';
-import { Route , Link } from 'react-router-dom'
-import { CommentList, AddComment } from './Comment'
-import * as ReadableAPI from '../utils/api'
+import { Link } from 'react-router-dom'
+import { AddComment } from './Comment'
 
 export class PostActions extends Component {
 

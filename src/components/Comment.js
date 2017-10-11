@@ -19,7 +19,10 @@ export class CommentList extends Component {
       <Row>
         <Col xs={12}>
           <h4>Comments</h4>
-          {this.props.comments.map((comment) => <Comment key={comment.id} comment={comment} />)}
+          {this.props.comments.map((comment) => <Comment key={comment.id}
+                comment={comment}
+                upVote={this.props.upVote}
+                downVote={this.props.downVote}/>)}
         </Col>
       </Row>
     )
@@ -30,19 +33,20 @@ export class CommentList extends Component {
 export class Comment extends Component{
 
   render(){
+    const comment = this.props.comment
     return(
       <div style={{margin:'10px'}} >
         <Card style={{padding:'10px'}}>
           <Row middle="xs">
             <Col xs={1} style={{textAlign:'center'}}>
-              <IconButton iconClassName="material-icons">add</IconButton>
-                <div>{this.props.comment.voteScore}</div>
-              <IconButton iconClassName="material-icons">remove</IconButton>
+              <IconButton iconClassName="material-icons" onClick={() => this.props.upVote(comment.id)}>add</IconButton>
+              <div>{comment.voteScore}</div>
+              <IconButton iconClassName="material-icons" onClick={() => this.props.downVote(comment.id)}>remove</IconButton>
             </Col>
             <Col xs={7}>
 
-                <p>{this.props.comment.body}</p><br />
-                <p>author: {this.props.comment.author}</p>
+              <p>{comment.body}</p><br />
+              <p>author: {comment.author}</p>
 
             </Col>
             <Col xs={4}>
@@ -57,14 +61,40 @@ export class Comment extends Component{
 }
 
 export class AddComment extends Component {
+
+  state = {
+    comment: "",
+    author: ""
+  }
+
+  addComment(event) {
+    const { comment, author } = this.state
+    console.log(this.props)
+    this.props.addComment(comment, author, this.props.id)
+
+  }
+
+  onChange = (e) => {
+    //const state = this.state
+    //state[e.target.name] = e.target.value;
+    this.setState({[e.target.name] :e.target.value});
+  }
+
   render(){
+
     return (
       <Card style={{margin: '10px', padding:'10px'}}>
         <Row>
           <Col xs={12}>
-                <TextField hintText="Insert Comment" />
-                <TextField hintText="Insert Author" />
-                <FlatButton label="Add Comment" />
+            <TextField hintText="Insert Comment"
+              name="comment" value={this.state.comment}
+              onChange={this.onChange}
+            />
+            <TextField hintText="Insert Author"
+              name="author" value={this.state.author}
+              onChange={this.onChange}
+            />
+            <FlatButton label="Add Comment" onClick={(e) => this.addComment(e)} />
           </Col>
         </Row>
       </Card>

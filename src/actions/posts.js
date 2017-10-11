@@ -1,18 +1,18 @@
 import * as ReadableAPI from '../utils/api'
 
 export const IS_LOADING = "IS_LOADING"
-export const isLoading = () => (
+export const isLoading = (bool) => (
    {
     type: IS_LOADING,
-    isLoading: true
+    isLoading: bool
   }
 )
 
 export const SERVER_ERROR = "SERVER_ERROR"
-export const serverError = () => (
+export const serverError = (bool) => (
    {
     type: SERVER_ERROR,
-    serverError: true
+    serverError: bool
   }
 )
 
@@ -22,7 +22,7 @@ export function addPost(title, body, owner, category) {
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
     return ReadableAPI.addPost(title, body, owner, category)
       .then(
@@ -30,6 +30,7 @@ export function addPost(title, body, owner, category) {
         error => dispatch(serverError())
       )
       .then((data) => {
+        dispatch(isLoading(false))
         dispatch(
           {
             type:ADD_POST,
@@ -51,21 +52,22 @@ export function deletePost(postId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
     return ReadableAPI.deletePost(postId)
       .then(
         response => response.json(),
         error => dispatch(serverError())
       )
-      .then(() =>
+      .then(() => {
+        dispatch(isLoading(false))
         dispatch(
           {
             type: DELETE_POST,
             postId: postId
           }
 
-        )
+        )}
       )
   }
 }
@@ -76,14 +78,15 @@ export function updatePost(postId, title, body) {
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
     return ReadableAPI.editPost(postId, title, body)
       .then(
         response => response.json(),
         error => dispatch(serverError())
       )
-      .then(() =>
+      .then(() =>{
+        dispatch(isLoading(false))
         dispatch(
           {
             type: UPDATE_POST,
@@ -92,7 +95,7 @@ export function updatePost(postId, title, body) {
             body
           }
 
-        )
+        )}
       )
   }
 }
@@ -102,21 +105,22 @@ export function fetchPosts() {
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
     return ReadableAPI.getPosts()
       .then(
         response => response.json(),
         error => dispatch(serverError())
       )
-      .then((data) =>
+      .then((data) =>{
+        dispatch(isLoading(false))
         dispatch(
           {
             type: FETCH_POSTS,
             data
           }
 
-        )
+        )}
       )
   }
 }
@@ -127,21 +131,22 @@ export function readPost(postId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
     return ReadableAPI.getPostById(postId)
       .then(
         response => response.json(),
         error => dispatch(serverError())
       )
-      .then((data) =>
+      .then((data) => {
+        dispatch(isLoading(false))
         dispatch(
           {
             type: READ_POST,
             data
           }
 
-        )
+        )}
       )
   }
 }
@@ -151,21 +156,22 @@ export function upVotePost(postId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
     return ReadableAPI.votePost(postId, "upVote")
       .then(
         response => response.json(),
         error => dispatch(serverError())
       )
-      .then(() =>
+      .then(() => {
+        dispatch(isLoading(false))
         dispatch(
           {
             type: UPVOTE_POST,
             postId: postId
           }
 
-        )
+        )}
       )
   }
 }
@@ -176,21 +182,22 @@ export function downVotePost(postId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
     return ReadableAPI.votePost(postId, "downVote")
       .then(
         response => response.json(),
         error => dispatch(serverError())
       )
-      .then(() =>
+      .then(() =>{
+        dispatch(isLoading(false))
         dispatch(
           {
             type: DOWNVOTE_POST,
             postId: postId
           }
 
-        )
+        )}
       )
   }
 }
