@@ -8,13 +8,9 @@ import { connect } from 'react-redux'
 
 class PostContainer extends Component{
 
-  state = {
-    currentPost: {}
-  }
-
-  componentWillMount() {
-    console.log(this.props.currentPost)
+  componentDidMount() {
     this.props.readPost(this.props.postId)
+    console.log(this.props)
   }
 
   render() {

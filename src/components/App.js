@@ -44,7 +44,7 @@ class App extends Component {
 function mapStateToProps ({loading, posts, comments}) {
   console.log(posts)
   return {
-    posts: posts.posts,
+    posts: Object.keys(posts.posts).map((k) => posts.posts[k]),
   }
 }
 

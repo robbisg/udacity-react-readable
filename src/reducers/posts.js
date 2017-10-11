@@ -2,6 +2,9 @@ import { ADD_POST, FETCH_POSTS, READ_POST, DELETE_POST, UPDATE_POST, UPVOTE_POST
 import { IS_LOADING, SERVER_ERROR} from '../actions/posts'
 import { combineReducers } from 'redux'
 import { comments } from './comments'
+import { arrayToObject } from '../utils/converter'
+
+
 
 
 export function loading(state = {}, action){
@@ -84,8 +87,7 @@ export function posts(state = {posts:[], currentPost:{}}, action) {
         isLoading: false,
         serverError: false,
         ...state,
-        posts: action.data.map((post) => ({...post}))
-
+        posts: arrayToObject(action.data)
 
       })
 

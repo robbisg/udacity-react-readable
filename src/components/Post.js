@@ -33,6 +33,7 @@ export class PostCard extends Component {
 
   render() {
       const linkTo = "/post/"+this.props.post.id;
+      console.log(this.props.post)
       return (
         <Card style={{margin:'10px'}}>
           <Link to={linkTo}>
@@ -71,11 +72,19 @@ export class PostList extends Component {
 }
 
 export class PostPage extends Component {
+
+
+  upVote(id) {
+    this.props.upVote(id)
+  }
+
+  downVote(id){
+    this.props.downVote(id)
+  }
+
   render (){
     const post = this.props.post
-    const upVote = this.props.upVote
-    const downVote = this.props.downVote
-
+    console.log(this.props)
     return (
       <Card>
         <CardText>
@@ -87,9 +96,9 @@ export class PostPage extends Component {
             </Col>
             <Col xs={4} style={{textAlign: 'center'}}>
 
-                <IconButton iconClassName="material-icons" onClick={upVote(post.id)} >add</IconButton>
-                <div style={{fontSize: '30px'}}>{post.voteScore}</div>
-                <IconButton iconClassName="material-icons" onClick={downVote(post.id)}>remove</IconButton>
+              <IconButton iconClassName="material-icons" onClick={() => this.upVote(post.id)} >add</IconButton>
+              <div style={{fontSize: '30px'}}>{post.voteScore}</div>
+              <IconButton iconClassName="material-icons" onClick={() => this.downVote(post.id)}>remove</IconButton>
 
             </Col>
           </Row>
