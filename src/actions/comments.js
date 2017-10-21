@@ -2,27 +2,30 @@ import * as ReadableAPI from '../utils/api'
 import { serverError, isLoading } from './posts'
 
 export const ADD_COMMENT = "ADD_COMMENT"
-export function addComment(body, owner, parentId) {
+export function addComment(body, author, parentId) {
+
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
-    return ReadableAPI.addComment(body, owner, parentId)
+    return ReadableAPI.addComment(body, author, parentId)
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          response.json()
+        },
         error => dispatch(serverError())
       )
-      .then(() =>
+      .then((data) => {
         dispatch(
           {
             type:ADD_COMMENT,
-            body,
-            owner,
-            parentId
+            ...data
           }
 
         )
+        }
       )
   }
 }
@@ -33,21 +36,24 @@ export function deleteComment(commentId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
     return ReadableAPI.deleteComment(commentId)
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          response.json()
+        },
         error => dispatch(serverError())
       )
-      .then(() =>
+      .then(() =>{
         dispatch(
           {
             type: DELETE_COMMENT,
             commentId: commentId
           }
 
-        )
+        )}
       )
   }
 }
@@ -58,14 +64,17 @@ export function updateComment(commentId, body) {
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
     return ReadableAPI.editComment(commentId, body)
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          response.json()
+        },
         error => dispatch(serverError())
       )
-      .then(() =>
+      .then(() =>{
         dispatch(
           {
             type: DELETE_COMMENT,
@@ -73,7 +82,7 @@ export function updateComment(commentId, body) {
             body
           }
 
-        )
+        )}
       )
   }
 }
@@ -84,21 +93,24 @@ export function fetchComments(postId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
     return ReadableAPI.getPostComments(postId)
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          response.json()
+        },
         error => dispatch(serverError())
       )
-      .then((data) =>
+      .then((data) => {
         dispatch(
           {
             type: FETCH_COMMENTS,
             data,
           }
 
-        )
+        )}
       )
   }
 }
@@ -109,21 +121,24 @@ export function upVoteComment(commentId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
     return ReadableAPI.voteComment(commentId, "upVote")
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          response.json()
+        },
         error => dispatch(serverError())
       )
-      .then(() =>
+      .then(() => {
         dispatch(
           {
             type: UPVOTE_COMMENT,
             commentId
           }
 
-        )
+        )}
       )
   }
 }
@@ -133,21 +148,25 @@ export function downVoteComment(commentId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading())
+    dispatch(isLoading(true))
 
     return ReadableAPI.voteComment(commentId, "downVote")
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          response.json()
+          return response
+        },
         error => dispatch(serverError())
       )
-      .then(() =>
+      .then(() =>{
         dispatch(
           {
             type: DOWNVOTE_COMMENT,
             commentId
           }
 
-        )
+        )}
       )
   }
 }

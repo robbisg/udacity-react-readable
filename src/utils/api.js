@@ -1,5 +1,5 @@
 
-const api = "http://localhost:5001"
+const api = "http://localhost:3001"
 
 
 // Generate a unique token for storing your bookshelf data on the backend server.
@@ -168,7 +168,7 @@ owner: String
 parentId: Should match a post id in the database.
 */
 
-export const addComment = (body, owner, parentId) =>
+export const addComment = (body, author, parentId) =>
   fetch(`${api}/comments`, {
     method: 'POST',
     headers: {
@@ -179,7 +179,7 @@ export const addComment = (body, owner, parentId) =>
       { id: Math.random().toString(36).substr(-8),
         timestamp: Date.now(),
         body,
-        owner,
+        author,
         parentId
       })
   })

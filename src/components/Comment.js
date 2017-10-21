@@ -15,14 +15,22 @@ import IconButton from 'material-ui/IconButton';
 export class CommentList extends Component {
 
   render () {
+    console.log(this.props.comments)
     return (
       <Row>
         <Col xs={12}>
           <h4>Comments</h4>
-          {this.props.comments.map((comment) => <Comment key={comment.id}
-                comment={comment}
-                upVote={this.props.upVote}
-                downVote={this.props.downVote}/>)}
+          {
+            this.props.comments.filter((comment) => !comment.deleted)
+            .map((comment) => <Comment key={comment.id}
+              comment={comment}
+              upVote={this.props.upVote}
+              downVote={this.props.downVote}
+              deleteComment={this.props.deleteComment}
+                              />)
+
+          }
+
         </Col>
       </Row>
     )
@@ -51,7 +59,7 @@ export class Comment extends Component{
             </Col>
             <Col xs={4}>
               <FlatButton label="Edit" />
-              <FlatButton label="Delete" />
+              <FlatButton label="Delete" onClick={() => this.props.deleteComment(comment.id)}/>
             </Col>
           </Row>
         </Card>
@@ -68,6 +76,7 @@ export class AddComment extends Component {
   }
 
   addComment(event) {
+    event.preventDefault()
     const { comment, author } = this.state
     console.log(this.props)
     this.props.addComment(comment, author, this.props.id)
@@ -77,6 +86,7 @@ export class AddComment extends Component {
   onChange = (e) => {
     //const state = this.state
     //state[e.target.name] = e.target.value;
+
     this.setState({[e.target.name] :e.target.value});
   }
 

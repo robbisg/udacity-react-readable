@@ -4,101 +4,83 @@ import { combineReducers } from 'redux'
 import { comments } from './comments'
 import { arrayToObject } from '../utils/converter'
 
-
-
-
-export function posts(state = {posts:[], isLoading:false, serverError:false}, action) {
+export function isLoading(state=false, action) {
 
   switch (action.type) {
-
     case IS_LOADING:
-      return Object.assign({}, state, {
-        isLoading: action.isLoading,
-        ...state
-      })
+      return action.isLoading
 
-    case SERVER_ERROR:
-      return Object.assign({}, state, {
-        serverError: action.isLoading,
-        ...state
-      })
+    default:
+      return state
+
+  }
+
+}
+
+
+export function posts(state={}, action) {
+
+  switch (action.type) {
 
 
     case ADD_POST:
       return Object.assign({}, state, {
         ...state,
-        posts: {
-          ...state.posts,
           [action.data.id]:
           {
             ...action.data
           }
-        }
-
       })
 
     case DELETE_POST:
       return Object.assign({}, state, {
         ...state,
-        posts: {
-          ...state.posts,
           [action.postId]:
           {
-            ...state.posts[action.postId],
+            ...state[action.postId],
             deleted: true
           }
-        }
+
 
       })
 
     case UPDATE_POST:
       return Object.assign({}, state, {
         ...state,
-        posts: {
-          ...state.posts,
-          [action.postId]:
+        [action.postId]:
           {
-            ...state.posts[action.postId],
+            ...state[action.postId],
             title: action.title,
             body: action.body
           }
-        }
 
       })
 
     case FETCH_POSTS:
-      return Object.assign({}, state, {
-        ...state,
-        posts: arrayToObject(action.data)
-
-      })
+      return Object.assign({}, state, arrayToObject(action.data))
 
 
     case UPVOTE_POST:
       return Object.assign({}, state, {
         ...state,
-        posts: {
-          ...state.posts,
-          [action.postId]:
+        [action.id]:
           {
-            ...state.posts[action.postId],
-            voteScore: state.posts[action.postId].voteScore + 1,
+            ...state[action.id],
+            voteScore: state[action.id].voteScore+1,
           }
-        }
+
 
       })
 
     case DOWNVOTE_POST:
       return Object.assign({}, state, {
         ...state,
-        posts: {
-          ...state.posts,
-          [action.postId]:
+        [action.id]:
           {
-            ...state.posts[action.postId],
-            voteScore: state.posts[action.postId].voteScore - 1,
+            ...state[action.id],
+            voteScore: state[action.id].voteScore-1,
           }
-        }
+
       })
 
 
@@ -109,6 +91,7 @@ export function posts(state = {posts:[], isLoading:false, serverError:false}, ac
 
 
 export const reducer = combineReducers({
+  isLoading,
   posts,
   comments
 })

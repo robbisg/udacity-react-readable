@@ -14,19 +14,18 @@ class PostContainer extends Component{
     this.props.fetchPosts()
     console.log(this.props)
 
-
   }
 
 
   render() {
-    const currentPost = this.props.posts[this.props.postId]
-    console.log(currentPost)
+    console.log(this.props)
 
-    if (this.props.isLoading) {
+    if (this.props.isLoading === true) {
         return <p>Loading…</p>;
     }
-
+    const currentPost = this.props.posts.filter((post) => post.id === this.props.postId)[0]
     return (
+
       <Row>
         <Col xs={12}>
           <PostActions />
@@ -38,11 +37,11 @@ class PostContainer extends Component{
   }
 }
 
-function mapStateToProps ({loading, posts, comments}) {
+function mapStateToProps ({isLoading, posts, comments}) {
   console.log(posts)
   return {
-    posts: posts.posts,
-    isLoading: posts.isLoading
+    posts: Object.keys(posts).map((k) => posts[k]),
+    isLoading: isLoading
   }
 }
 

@@ -26,11 +26,13 @@ export function addPost(title, body, owner, category) {
 
     return ReadableAPI.addPost(title, body, owner, category)
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          return response.json()
+        },
         error => dispatch(serverError())
       )
       .then((data) => {
-        dispatch(isLoading(false))
         dispatch(
           {
             type:ADD_POST,
@@ -56,11 +58,13 @@ export function deletePost(postId) {
 
     return ReadableAPI.deletePost(postId)
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          return response.json()
+        },
         error => dispatch(serverError())
       )
       .then(() => {
-        dispatch(isLoading(false))
         dispatch(
           {
             type: DELETE_POST,
@@ -82,11 +86,13 @@ export function updatePost(postId, title, body) {
 
     return ReadableAPI.editPost(postId, title, body)
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          return response.json()
+        },
         error => dispatch(serverError())
       )
       .then(() =>{
-        dispatch(isLoading(false))
         dispatch(
           {
             type: UPDATE_POST,
@@ -109,11 +115,13 @@ export function fetchPosts() {
 
     return ReadableAPI.getPosts()
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          return response.json()
+        },
         error => dispatch(serverError())
       )
       .then((data) =>{
-        dispatch(isLoading(false))
         dispatch(
           {
             type: FETCH_POSTS,
@@ -135,11 +143,13 @@ export function readPost(postId) {
 
     return ReadableAPI.getPostById(postId)
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          response.json()
+        },
         error => dispatch(serverError())
       )
       .then((data) => {
-        dispatch(isLoading(false))
         dispatch(
           {
             type: READ_POST,
@@ -160,18 +170,21 @@ export function upVotePost(postId) {
 
     return ReadableAPI.votePost(postId, "upVote")
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          response.json()
+        },
         error => dispatch(serverError())
       )
-      .then(() => {
-        dispatch(isLoading(false))
+      .then((data) => {
         dispatch(
           {
             type: UPVOTE_POST,
-            postId: postId
+            id: postId
           }
 
-        )}
+          )
+        }
       )
   }
 }
@@ -186,15 +199,17 @@ export function downVotePost(postId) {
 
     return ReadableAPI.votePost(postId, "downVote")
       .then(
-        response => response.json(),
+        (response) => {
+          dispatch(isLoading(false))
+          response.json()
+        },
         error => dispatch(serverError())
       )
-      .then(() =>{
-        dispatch(isLoading(false))
+      .then((data) =>{
         dispatch(
           {
             type: DOWNVOTE_POST,
-            postId: postId
+            id: postId
           }
 
         )}

@@ -9,12 +9,13 @@ import { AddComment } from './Comment'
 export class PostActions extends Component {
 
   render() {
+    const linkTo = "/post/edit";
     return (
       <Col xs={6}>
         <h3></h3>
         <Row>
           <FlatButton label="Add Post" />
-          <FlatButton label="Edit Post" />
+          <Link to={linkTo}><FlatButton label="Edit Post" /></Link>
           <FlatButton label="Delete Post" />
         </Row>
       </Col>
@@ -71,14 +72,6 @@ export class PostList extends Component {
 export class PostPage extends Component {
 
 
-  upVote(id) {
-    this.props.upVote(id)
-  }
-
-  downVote(id){
-    this.props.downVote(id)
-  }
-
   render (){
     const post = this.props.post
     console.log(this.props)
@@ -93,9 +86,9 @@ export class PostPage extends Component {
             </Col>
             <Col xs={4} style={{textAlign: 'center'}}>
 
-              <IconButton iconClassName="material-icons" onClick={() => this.upVote(post.id)} >add</IconButton>
+              <IconButton iconClassName="material-icons" onClick={(event) => this.props.upVote(post.id)} >add</IconButton>
               <div style={{fontSize: '30px'}}>{post.voteScore}</div>
-              <IconButton iconClassName="material-icons" onClick={() => this.downVote(post.id)}>remove</IconButton>
+              <IconButton iconClassName="material-icons" onClick={(event) => this.props.downVote(post.id)}>remove</IconButton>
 
             </Col>
           </Row>
