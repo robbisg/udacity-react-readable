@@ -1,6 +1,21 @@
 import { ADD_COMMENT, FETCH_COMMENTS, READ_COMMENT, DELETE_COMMENT, UPDATE_COMMENT } from '../actions/comments'
-import { UPVOTE_COMMENT, DOWNVOTE_COMMENT } from '../actions/comments'
+import { UPVOTE_COMMENT, DOWNVOTE_COMMENT, COMMENT_LOADING } from '../actions/comments'
 import { arrayToObject } from '../utils/converter'
+
+
+export function commentLoading(state=false, action) {
+
+  switch (action.type) {
+    case COMMENT_LOADING:
+      return action.isLoading
+
+    default:
+      return state
+
+  }
+
+}
+
 
 export function comments(state={}, action) {
 
@@ -66,7 +81,7 @@ export function comments(state={}, action) {
             ...state[action.commentId],
             voteScore: state[action.commentId].voteScore - 1,
           }
-        
+
       })
 
     default:

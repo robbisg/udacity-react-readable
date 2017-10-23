@@ -5,6 +5,7 @@ import { PostPage, PostActions } from './Post'
 import { fetchPosts, downVotePost, upVotePost } from '../actions/posts'
 import { Route , Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import LinearProgress from 'material-ui/LinearProgress';
 
 class PostContainer extends Component{
 
@@ -13,16 +14,12 @@ class PostContainer extends Component{
 
     this.props.fetchPosts()
     console.log(this.props)
-
   }
 
 
   render() {
     console.log(this.props)
 
-    if (this.props.isLoading === true) {
-        return <p>Loading…</p>;
-    }
     const currentPost = this.props.posts.filter((post) => post.id === this.props.postId)[0]
     return (
 
@@ -37,11 +34,10 @@ class PostContainer extends Component{
   }
 }
 
-function mapStateToProps ({isLoading, posts, comments}) {
-  console.log(posts)
+function mapStateToProps ({postLoading, posts, commentLoading, comments}) {
   return {
     posts: Object.keys(posts).map((k) => posts[k]),
-    isLoading: isLoading
+    postLoading: postLoading
   }
 }
 

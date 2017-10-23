@@ -1,9 +1,9 @@
 import * as ReadableAPI from '../utils/api'
 
-export const IS_LOADING = "IS_LOADING"
-export const isLoading = (bool) => (
+export const POST_LOADING = "POST_LOADING"
+export const postLoading = (bool) => (
    {
-    type: IS_LOADING,
+    type: POST_LOADING,
     isLoading: bool
   }
 )
@@ -22,12 +22,12 @@ export function addPost(title, body, owner, category) {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(postLoading(true))
 
     return ReadableAPI.addPost(title, body, owner, category)
       .then(
         (response) => {
-          dispatch(isLoading(false))
+          dispatch(postLoading(false))
           return response.json()
         },
         error => dispatch(serverError())
@@ -54,12 +54,12 @@ export function deletePost(postId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(postLoading(true))
 
     return ReadableAPI.deletePost(postId)
       .then(
         (response) => {
-          dispatch(isLoading(false))
+          dispatch(postLoading(false))
           return response.json()
         },
         error => dispatch(serverError())
@@ -82,12 +82,12 @@ export function updatePost(postId, title, body) {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(postLoading(true))
 
     return ReadableAPI.editPost(postId, title, body)
       .then(
         (response) => {
-          dispatch(isLoading(false))
+          dispatch(postLoading(false))
           return response.json()
         },
         error => dispatch(serverError())
@@ -111,12 +111,12 @@ export function fetchPosts() {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(postLoading(true))
 
     return ReadableAPI.getPosts()
       .then(
         (response) => {
-          dispatch(isLoading(false))
+          dispatch(postLoading(false))
           return response.json()
         },
         error => dispatch(serverError())
@@ -139,12 +139,12 @@ export function readPost(postId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(postLoading(true))
 
     return ReadableAPI.getPostById(postId)
       .then(
         (response) => {
-          dispatch(isLoading(false))
+          dispatch(postLoading(false))
           response.json()
         },
         error => dispatch(serverError())
@@ -166,12 +166,12 @@ export function upVotePost(postId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(postLoading(true))
 
     return ReadableAPI.votePost(postId, "upVote")
       .then(
         (response) => {
-          dispatch(isLoading(false))
+          dispatch(postLoading(false))
           response.json()
         },
         error => dispatch(serverError())
@@ -195,12 +195,12 @@ export function downVotePost(postId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(postLoading(true))
 
     return ReadableAPI.votePost(postId, "downVote")
       .then(
         (response) => {
-          dispatch(isLoading(false))
+          dispatch(postLoading(false))
           response.json()
         },
         error => dispatch(serverError())

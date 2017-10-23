@@ -1,13 +1,14 @@
 import { ADD_POST, FETCH_POSTS, READ_POST, DELETE_POST, UPDATE_POST, UPVOTE_POST, DOWNVOTE_POST } from '../actions/posts'
-import { IS_LOADING, SERVER_ERROR} from '../actions/posts'
+import { POST_LOADING, SERVER_ERROR} from '../actions/posts'
 import { combineReducers } from 'redux'
-import { comments } from './comments'
+import { comments, commentLoading } from './comments'
+import { categories, categoryLoading } from './categories'
 import { arrayToObject } from '../utils/converter'
 
-export function isLoading(state=false, action) {
+export function postLoading(state=false, action) {
 
   switch (action.type) {
-    case IS_LOADING:
+    case POST_LOADING:
       return action.isLoading
 
     default:
@@ -57,7 +58,10 @@ export function posts(state={}, action) {
       })
 
     case FETCH_POSTS:
-      return Object.assign({}, state, arrayToObject(action.data))
+      return Object.assign({}, state, action.data.reduce((obj, item) => {
+                                      obj[item.id] = item
+                                      return obj
+                                    }, {}))
 
 
     case UPVOTE_POST:
@@ -91,7 +95,10 @@ export function posts(state={}, action) {
 
 
 export const reducer = combineReducers({
-  isLoading,
+  postLoading,
   posts,
-  comments
+  commentLoading,
+  comments,
+  categoryLoading,
+  categories
 })

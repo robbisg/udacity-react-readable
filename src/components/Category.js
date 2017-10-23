@@ -21,7 +21,7 @@ export class Category extends Component{
           <Col xs={6}>
             <h3>Categories</h3>
             <Row>
-              <Col xs={6}><CategoryList categories={this.props.categories}/></Col>
+              <Col xs={6}><CategoryList categories={this.props.categories} selectCategory={this.props.selectCategory}/></Col>
             </Row>
           </Col>
       )
@@ -31,11 +31,14 @@ export class Category extends Component{
 
 export class CategoryList extends Component{
   render (){
+    console.log(this.props.categories)
     return (
 
         <Row>
-            {this.props.categories.map((category) => {
-              return <Col xs={this.props.categories.length}><Chip style={styles.chip}>{category.name}</Chip></Col>
+          {this.props.categories.map((category) => {
+            return <Col key={category.name} xs={this.props.categories.length}>
+              <Chip style={styles.chip} onClick={() => this.props.selectCategory(category.name)}>{category.name}</Chip>
+            </Col>
             })}
         </Row>
 

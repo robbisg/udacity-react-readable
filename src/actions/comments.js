@@ -1,5 +1,16 @@
 import * as ReadableAPI from '../utils/api'
-import { serverError, isLoading } from './posts'
+import { serverError } from './posts'
+
+
+export const COMMENT_LOADING = "COMMENT_LOADING"
+export const commentLoading = (bool) => (
+   {
+    type: COMMENT_LOADING,
+    isLoading: bool
+  }
+)
+
+
 
 export const ADD_COMMENT = "ADD_COMMENT"
 export function addComment(body, author, parentId) {
@@ -7,13 +18,13 @@ export function addComment(body, author, parentId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(commentLoading(true))
 
     return ReadableAPI.addComment(body, author, parentId)
       .then(
         (response) => {
-          dispatch(isLoading(false))
-          response.json()
+          dispatch(commentLoading(false))
+          return response.json()
         },
         error => dispatch(serverError())
       )
@@ -36,13 +47,13 @@ export function deleteComment(commentId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(commentLoading(true))
 
     return ReadableAPI.deleteComment(commentId)
       .then(
         (response) => {
-          dispatch(isLoading(false))
-          response.json()
+          dispatch(commentLoading(false))
+          return response.json()
         },
         error => dispatch(serverError())
       )
@@ -64,13 +75,13 @@ export function updateComment(commentId, body) {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(commentLoading(true))
 
     return ReadableAPI.editComment(commentId, body)
       .then(
         (response) => {
-          dispatch(isLoading(false))
-          response.json()
+          dispatch(commentLoading(false))
+          return response.json()
         },
         error => dispatch(serverError())
       )
@@ -93,13 +104,13 @@ export function fetchComments(postId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(commentLoading(true))
 
     return ReadableAPI.getPostComments(postId)
       .then(
         (response) => {
-          dispatch(isLoading(false))
-          response.json()
+          dispatch(commentLoading(false))
+          return response.json()
         },
         error => dispatch(serverError())
       )
@@ -121,13 +132,13 @@ export function upVoteComment(commentId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(commentLoading(true))
 
     return ReadableAPI.voteComment(commentId, "upVote")
       .then(
         (response) => {
-          dispatch(isLoading(false))
-          response.json()
+          dispatch(commentLoading(false))
+          return response.json()
         },
         error => dispatch(serverError())
       )
@@ -148,14 +159,13 @@ export function downVoteComment(commentId) {
 
   return function (dispatch) {
 
-    dispatch(isLoading(true))
+    dispatch(commentLoading(true))
 
     return ReadableAPI.voteComment(commentId, "downVote")
       .then(
         (response) => {
-          dispatch(isLoading(false))
-          response.json()
-          return response
+          dispatch(commentLoading(false))
+          return response.json()
         },
         error => dispatch(serverError())
       )

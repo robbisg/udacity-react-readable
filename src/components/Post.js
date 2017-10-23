@@ -3,6 +3,9 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 import { Row, Col } from 'react-flexbox-grid';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import PostCreation from './PostCreation'
+import Dialog from 'material-ui/Dialog';
 import { Link } from 'react-router-dom'
 import { AddComment } from './Comment'
 
@@ -14,7 +17,7 @@ export class PostActions extends Component {
       <Col xs={6}>
         <h3></h3>
         <Row>
-          <FlatButton label="Add Post" />
+          <FlatButton label="Add Post" onClick={() => this.props.add()}/>
           <Link to={linkTo}><FlatButton label="Edit Post" /></Link>
           <FlatButton label="Delete Post" />
         </Row>
@@ -61,7 +64,7 @@ export class PostList extends Component {
       return(
         <Col xs={12}>
           {this.props.posts.map((post) => {
-            return <PostCard post={post} />
+            return <PostCard key={post.id} post={post} />
           })}
         </Col>
       )
@@ -95,5 +98,57 @@ export class PostPage extends Component {
         </CardText>
       </Card>
     )
+  }
+}
+
+
+export class AddPostModal extends Component {
+
+
+  state = {
+    body: "",
+    owner: "",
+    category: "",
+    title: ""
+  }
+
+  handleAdd(event) {
+    event.preventDefault()
+    const { body, owner, category, title } = this.state
+    console.log(this.state)
+    this.props.addPost(title, body, owner, category)
+
+  }
+
+  changeState = (field, value) => {
+    this.setState({[field]:value});
+  }
+
+
+  render() {
+    const actions = [
+        <FlatButton
+          label="Cancel"
+          primary={true}
+          onClick={() => this.props.showModal()}
+        />,
+        <FlatButton
+          label="Add Post"
+          primary={true}
+          onClick={(e) => this.handleAdd(e)}
+        />,
+      ];
+
+    return (
+      <Dialog
+        title="Post Creator"
+        modal={false}
+        actions={actions}
+        open={this.props.isVisible}
+        onRequestClose={() => this.props.showModal()}
+      >
+        <PostCreation categories={this.props.categories} changeState={this.changeState}/>
+      </Dialog>
+    );
   }
 }

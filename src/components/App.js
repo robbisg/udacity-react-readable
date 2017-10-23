@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route , Link } from 'react-router-dom'
 import Home from './Home'
 import PostContainer from './PostContainer'
-import PostCreation from './PostCreation'
 import '../App.css';
 import * as ReadableAPI from '../utils/api'
 

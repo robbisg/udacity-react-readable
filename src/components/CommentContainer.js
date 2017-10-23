@@ -34,10 +34,10 @@ class CommentContainer extends Component {
 }
 
 
-function mapStateToProps ({loading, posts, comments}) {
-  console.log(comments)
+function mapStateToProps ({postLoading, posts, commentLoading, comments}) {
   return {
-    comments: Object.keys(comments).map((k) => comments[k]),
+    comments: Object.keys(comments).map((k) => comments[k]).sort(function(a,b){return b.voteScore-a.voteScore}),
+    commentLoading: commentLoading
   }
 }
 
