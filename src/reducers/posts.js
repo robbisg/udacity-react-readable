@@ -20,7 +20,7 @@ export function postLoading(state=false, action) {
 
 
 export function posts(state={}, action) {
-
+  //console.log(action)
   switch (action.type) {
 
 
@@ -48,20 +48,15 @@ export function posts(state={}, action) {
     case UPDATE_POST:
       return Object.assign({}, state, {
         ...state,
-        [action.postId]:
+        [action.data.id]:
           {
-            ...state[action.postId],
-            title: action.title,
-            body: action.body
+            ...action.data
           }
 
       })
 
     case FETCH_POSTS:
-      return Object.assign({}, state, action.data.reduce((obj, item) => {
-                                      obj[item.id] = item
-                                      return obj
-                                    }, {}))
+      return arrayToObject(action.data)
 
 
     case UPVOTE_POST:
@@ -86,6 +81,9 @@ export function posts(state={}, action) {
           }
 
       })
+
+    case READ_POST:
+      return arrayToObject([action.data])
 
 
     default:

@@ -85,12 +85,11 @@ export function updateComment(commentId, body) {
         },
         error => dispatch(serverError())
       )
-      .then(() =>{
+      .then((data) =>{
         dispatch(
           {
-            type: DELETE_COMMENT,
-            commentId,
-            body
+            type: UPDATE_COMMENT,
+            data,
           }
 
         )}

@@ -8,7 +8,7 @@ import { Route , Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 
-class PostCreation extends Component{
+export class PostCreation extends Component{
 
   state = {
     value: ""
@@ -16,7 +16,7 @@ class PostCreation extends Component{
 
   handleMenu = (event, index, value) => {
     this.setState({value})
-    console.log(event, index, value)
+    //console.log(event, index, value)
     this.sendChange("category", value)
   };
 
@@ -74,4 +74,68 @@ class PostCreation extends Component{
   }
 }
 
-export default PostCreation;
+export class PostEditor extends Component {
+  state = {
+    value: ""
+  }
+
+  handleMenu = (event, index, value) => {
+    this.setState({value})
+    console.log(event, index, value)
+    this.sendChange("category", value)
+  };
+
+  onChange = (e) => {
+    this.sendChange(e.target.name, e.target.value)
+  }
+
+  sendChange = (field, value) => {
+    this.props.changeState(field, value)
+
+  }
+
+  render() {
+
+    return (
+      <Row>
+        <Col xs={12}>
+          <TextField
+            name="title"
+            fullWidth={true}
+            value={this.props.title}
+            floatingLabelText="Title"
+            onChange={(e) => this.onChange(e)}
+          /><br />
+        </Col>
+
+        <Col xs={12}>
+          <TextField
+            name="body"
+            value={this.props.body}
+            fullWidth={true}
+            floatingLabelText="Text"
+            onChange={(e) => this.onChange(e)}
+          /><br />
+        </Col>
+        <Col xs={6}>
+          <TextField
+            name="owner"
+            value={this.props.owner}
+            floatingLabelText="Author"
+            disabled={true}
+          /><br />
+        </Col>
+        <Col xs={6}>
+          <TextField
+            name="category"
+            floatingLabelText="Category"
+            value={this.props.category}
+            disabled={true}
+          />
+        </Col>
+      </Row>
+    )
+  }
+
+
+}

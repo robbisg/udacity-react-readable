@@ -10,7 +10,6 @@ import { Provider } from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import { reducer } from './reducers/posts'
-import { fetchPosts, addPost } from './actions/posts'
 
 //const loggerMiddleware = createLogger()
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
-import { Grid, Row, Col } from 'react-flexbox-grid';
-import CommentContainer from './CommentContainer'
+import { Row, Col } from 'react-flexbox-grid';
 import { PostPage, PostActions } from './Post'
-import { fetchPosts, downVotePost, upVotePost } from '../actions/posts'
-import { Route , Link, withRouter } from 'react-router-dom'
+import { readPost,
+         addPost,
+         downVotePost,
+         upVotePost,
+         deletePost,
+         updatePost } from '../actions/posts'
+import { fetchCategories } from '../actions/categories'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import LinearProgress from 'material-ui/LinearProgress';
 
@@ -12,41 +17,60 @@ class PostContainer extends Component{
 
   componentWillMount() {
 
-    this.props.fetchPosts()
-    console.log(this.props)
+    this.props.readPost(this.props.postId)
+    this.props.fetchCategories()
+    //console.log(this.props)
   }
 
 
-  render() {
-    console.log(this.props)
+  addPost = (title, body, owner, category) => {
+    this.props.addPost(title, body, owner, category)
+    this.props.history.push("/")
+  }
 
-    const currentPost = this.props.posts.filter((post) => post.id === this.props.postId)[0]
+  render() {
+    //console.log(this.props)
+
+    const currentPost = this.props.post.pop()
     return (
 
       <Row>
         <Col xs={12}>
-          <PostActions />
-          <PostPage post={currentPost} upVote={this.props.upVotePost} downVote={this.props.downVotePost}/>
-          <CommentContainer postId={this.props.postId} />
+          <PostActions
+            addPost={this.addPost}
+            categories={this.props.categories}
+          />
+          <PostPage
+            post={currentPost}
+            upVote={this.props.upVotePost}
+            downVote={this.props.downVotePost}
+            edit={this.props.updatePost}
+            delete={this.props.deletePost}
+            history={this.props.history}
+          />
         </Col>
       </Row>
     )
   }
 }
 
-function mapStateToProps ({postLoading, posts, commentLoading, comments}) {
+function mapStateToProps (state) {
   return {
-    posts: Object.keys(posts).map((k) => posts[k]),
-    postLoading: postLoading
+    post: Object.keys(state.posts).map((k) => state.posts[k]),
+    postLoading: state.postLoading,
+    categories: state.categories
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    fetchPosts: () => dispatch(fetchPosts()),
+    readPost: (id) => dispatch(readPost(id)),
+    addPost: (title, body, owner, category) => dispatch(addPost(title, body, owner, category)),
     upVotePost: (id) => dispatch(upVotePost(id)),
-    downVotePost: (id) => dispatch(downVotePost(id))
-
+    downVotePost: (id) => dispatch(downVotePost(id)),
+    updatePost: (id, title, body) => dispatch(updatePost(id, title, body)),
+    deletePost: (id) => dispatch(deletePost(id)),
+    fetchCategories: () => dispatch(fetchCategories())
   }
 }
 

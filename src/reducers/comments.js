@@ -19,7 +19,7 @@ export function commentLoading(state=false, action) {
 
 export function comments(state={}, action) {
 
-  console.log(action)
+  //console.log(action)
 
   switch (action.type) {
 
@@ -49,17 +49,16 @@ export function comments(state={}, action) {
     case UPDATE_COMMENT:
       return Object.assign({}, state, {
         ...state,
-          [action.commentId]:
+          [action.data.id]:
           {
-            ...state[action.commentsId],
-            body: action.body
+            ...action.data
           }
 
 
       })
 
     case FETCH_COMMENTS:
-      return Object.assign({}, state, arrayToObject(action.data))
+      return arrayToObject(action.data)
 
 
     case UPVOTE_COMMENT:

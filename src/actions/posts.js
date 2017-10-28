@@ -92,13 +92,11 @@ export function updatePost(postId, title, body) {
         },
         error => dispatch(serverError())
       )
-      .then(() =>{
+      .then((data) =>{
         dispatch(
           {
             type: UPDATE_POST,
-            postId,
-            title,
-            body
+            data
           }
 
         )}
@@ -145,7 +143,7 @@ export function readPost(postId) {
       .then(
         (response) => {
           dispatch(postLoading(false))
-          response.json()
+          return response.json()
         },
         error => dispatch(serverError())
       )

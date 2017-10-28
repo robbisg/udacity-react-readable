@@ -1,67 +1,100 @@
 import React, { Component } from 'react';
-import { Route , Link, withRouter } from 'react-router-dom'
-import { PostActions, PostList, AddPostModal } from './Post'
-import Dialog from 'material-ui/Dialog';
+import { withRouter } from 'react-router-dom'
+import { PostActions, PostPage, AddPostModal } from './Post'
+import FlatButton from 'material-ui/FlatButton';
 import { Category } from './Category'
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import { fetchPosts, addPost } from '../actions/posts'
-import { fetchCategories } from '../actions/categories'
+import { fetchPosts, addPost, updatePost, deletePost, editPost, upVotePost, downVotePost } from '../actions/posts'
+
 import { connect } from 'react-redux'
-import FlatButton from 'material-ui/FlatButton';
 
 class Home extends Component {
 
   state = {
-    showingPosts: [],
-    isAddModal: false
+    selectedSort:"vote"
   }
 
   componentWillMount() {
     this.props.fetchPosts()
-    this.props.fetchCategories()
   }
 
-  selectCategory = (categoryName) => {
-    this.setState({selectedCategory: categoryName,
-                    showingPosts: this.props.posts.filter((post) => post.category === this.state.selectedCategory)
-                    })
+
+  selectSort = (value) => {
+    this.setState({selectedSort: value})
   }
 
-  showModal = () => {
-    this.setState({isAddModal: !this.state.isAddModal})
-  }
 
   addPost = (title, body, owner, category) => {
     this.props.addPost(title, body, owner, category)
   }
 
+  sortbyVote = (a,b) => {return b.voteScore - a.voteScore}
+  sortbyTime = (a,b) => {return a.timestamp - b.timestamp}
+
+  filterPosts = () => {
+
+    const posts = this.props.posts
+    const categoryPosts = this.props.selectedCategory === "all" ?
+    posts : posts.filter((p) => p.category === this.props.selectedCategory)
+    const sortFunction = this.state.selectedSort === 'vote' ? this.sortbyVote : this.sortbyTime
+    const showingPosts = categoryPosts.sort(sortFunction)
+    return showingPosts
+
+  }
+
   render() {
+
+    const showingPosts = this.filterPosts()
+
 
     if (this.props.postLoading || this.props.categoryLoading){
       <p>Loading...</p>
     }
 
-    if (this.state.isAddModal){
-
-      return <AddPostModal
-        categories={this.props.categories}
-        isVisible={this.state.isAddModal}
-        showModal={this.showModal}
-        addPost={this.addPost}
-             />
-
-    }
 
       return(
+        <div>
+
           <Grid>
+
             <Col xs={12}>
-              <Category categories={this.props.categories} selectCategory={this.selectCategory}/>
               <Row>
-                <PostActions add={this.showModal}/>
-                <PostList posts={this.props.posts}/>
+                <Category categories={this.props.categories}/>
               </Row>
+
+
+              <Row>
+                <Col xs={6}>
+                  <PostActions
+                    addPost={this.addPost}
+                    categories={this.props.categories}
+                  />
+                  <FlatButton label="Sort by vote" onClick={() => this.selectSort("vote")}/>
+                  <FlatButton label="Sort by time" onClick={() => this.selectSort("time")}/>
+                </Col>
+              </Row>
+
+
+              <Row>
+                <Col xs={12}>
+                  {showingPosts.map((post) => {
+                    return <PostPage
+                      category={post.category}
+                      key={post.id}
+                      post={post}
+                      delete={this.props.deletePost}
+                      upVote={this.props.upVote}
+                      downVote={this.props.downVote}
+                      edit={this.props.editPost}
+                      history={this.props.history}
+                           />
+                  })}
+                </Col>
+              </Row>
+
             </Col>
           </Grid>
+        </div>
       )
 
     }
@@ -69,24 +102,20 @@ class Home extends Component {
 
 function mapStateToProps (state) {
   return {
-    catposts: Object.keys(state.posts).map((k) => state.posts[k])
-                   .reduce((obj, item) => {
-                     obj[item.category] = obj[item.category]===undefined ? [item] : obj[item.category].concat([item])
-
-                     return obj
-                   },{}),
-    posts: Object.keys(state.posts).map((k) => state.posts[k]).sort(function(a,b){return b.voteScore-a.voteScore}),
-
+    posts: Object.keys(state.posts).map((k) => state.posts[k]).filter((p) => !p.deleted).sort(function(a,b){return b.voteScore-a.voteScore}),
     postLoading: state.postLoading,
-    categories: state.categories
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     fetchPosts: () => dispatch(fetchPosts()),
-    fetchCategories: () => dispatch(fetchCategories()),
-    addPost: (title, body, owner, category) => dispatch(addPost(title, body, owner, category))
+
+    addPost: (title, body, owner, category) => dispatch(addPost(title, body, owner, category)),
+    upVote: (id) => dispatch(upVotePost(id)),
+    downVote: (id) => dispatch(downVotePost(id)),
+    updatePost: (id, title, body) => dispatch(updatePost(id, title, body)),
+    deletePost: (id) => dispatch(deletePost(id))
   }
 }
 
