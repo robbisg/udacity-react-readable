@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 import { PostActions, PostPage, AddPostModal } from './Post'
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import { Category } from './Category'
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { fetchPosts, addPost, updatePost, deletePost, editPost, upVotePost, downVotePost } from '../actions/posts'
@@ -55,45 +55,43 @@ class Home extends Component {
       return(
         <div>
 
-          <Grid>
-
-            <Col xs={12}>
-              <Row>
-                <Category categories={this.props.categories}/>
-              </Row>
 
 
-              <Row>
-                <Col xs={6}>
-                  <PostActions
-                    addPost={this.addPost}
-                    categories={this.props.categories}
-                  />
-                  <FlatButton label="Sort by vote" onClick={() => this.selectSort("vote")}/>
-                  <FlatButton label="Sort by time" onClick={() => this.selectSort("time")}/>
-                </Col>
-              </Row>
+          <Col xs={12}>
+
+            <Row style={{margin:"15px"}}>
+              <Col xs={6}>
+                <PostActions
+                  addPost={this.addPost}
+                  categories={this.props.categories}
+                />
+              </Col>
+              <Col xs={6}>
+                <RaisedButton label="Sort by vote" onClick={() => this.selectSort("vote")}/>
+                <RaisedButton label="Sort by time" onClick={() => this.selectSort("time")}/>
+              </Col>
+            </Row>
 
 
-              <Row>
-                <Col xs={12}>
-                  {showingPosts.map((post) => {
-                    return <PostPage
-                      category={post.category}
-                      key={post.id}
-                      post={post}
-                      delete={this.props.deletePost}
-                      upVote={this.props.upVote}
-                      downVote={this.props.downVote}
-                      edit={this.props.editPost}
-                      history={this.props.history}
-                           />
-                  })}
-                </Col>
-              </Row>
+            <Row>
+              <Col xs={12}>
+                {showingPosts.map((post) => {
+                  return <PostPage
+                    category={post.category}
+                    key={post.id}
+                    post={post}
+                    delete={this.props.deletePost}
+                    upVote={this.props.upVote}
+                    downVote={this.props.downVote}
+                    edit={this.props.editPost}
+                    history={this.props.history}
+                         />
+                })}
+              </Col>
+            </Row>
 
-            </Col>
-          </Grid>
+          </Col>
+
         </div>
       )
 

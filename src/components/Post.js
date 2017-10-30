@@ -26,11 +26,9 @@ export class PostActions extends Component {
   render() {
     return (
 
-      <div key={0}>
+      <div>
         <Col xs={6}>
-          <Row>
-            <FlatButton label="Add Post" onClick={() => this.showModal()}/>
-          </Row>
+          <FlatButton label="Add Post" onClick={() => this.showModal()}/>
         </Col>
 
         <AddPostModal
@@ -69,17 +67,29 @@ export class PostPage extends Component {
     this.handleEdit()
   }
 
-
-  render (){
-    const post = this.props.post
-    //console.log(this.props)
-    const linkTo = "/"+post.category+"/"+post.id;
-    const date = new Date(post.timestamp);
+  getDate = (timestamp) => {
+    const date = new Date(timestamp);
     const datevalues = {
          'year':date.getFullYear(),
          'month':date.getMonth()+1,
          'day': date.getDate(),
       };
+    return datevalues
+  }
+
+
+  render (){
+    console.log(this.props)
+    if (this.props.post === {}){
+      <div>
+        <p> Post has been deleted.</p>
+        <Link to="/">Go Back</Link>
+      </div>
+    }
+
+    const post = this.props.post
+    const linkTo = "/"+post.category+"/"+post.id;
+    const datevalues = this.getDate(post.timestamp)
 
 
 
@@ -98,7 +108,11 @@ export class PostPage extends Component {
                 <Link to={linkTo}><h2>{post.title}</h2></Link>
                 <h4>by {post.author}</h4>
                 <p>{post.body}</p>
-                <p>{datevalues.year} / {datevalues.month} / {datevalues.day}</p>
+                <hr/>
+                <Row>
+                  <Col xs={6}>{datevalues.year} / {datevalues.month} / {datevalues.day}</Col>
+                  <Col xs={6}>Comments: {post.commentCount}</Col>
+                </Row>
               </Col>
               <Col xs={4} style={{textAlign: 'center'}}>
                 <VoteComponent

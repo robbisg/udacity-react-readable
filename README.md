@@ -10,14 +10,21 @@ To install and run the app follow these steps:
 
 ```
 # Clone the project
-git clone https://github.com/robbisg/udacity-react-readable my-reads
-cd my-reads
+git clone https://github.com/robbisg/udacity-react-readable my-readable
+cd my-readable
 
 # Install dependecies
 npm install
 
 # Start the App
 npm start
+
+# Download the server
+git clone https://github.com/udacity/reactnd-project-readable-starter my-readable-server
+cd my-readable-server/api_server
+
+# Start the server
+node server.js
 ```
 
 Now you can go to http://localhost:3000 and find your virtual bookshelf!

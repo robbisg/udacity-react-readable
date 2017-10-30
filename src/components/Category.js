@@ -2,52 +2,35 @@ import React, { Component } from 'react'
 import FlatButton from 'material-ui/FlatButton';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import TextField from 'material-ui/TextField';
-import Chip from 'material-ui/Chip';
 import { Link } from 'react-router-dom'
-
+import {Card, CardText} from 'material-ui/Card';
 
 export class Category extends Component{
   render() {
 
-    const styles = {
-        chip: {
-          margin: '2px',
-        },
-        wrapper: {
-          display: 'flex',
-          flexWrap: 'wrap',
-        },
 
-      };
       return (
-
+        <Card>
           <Col xs={6}>
-            <h3>Categories</h3>
+            <h3></h3>
+
+
             <Row>
-              <Col xs={6}>
-
-                <Row>
-                  {this.props.categories.map((category) => {
-                    return <Col key={category.name} xs={3}>
-                      <Link to={category.name}>
-                        <Chip
-                          className={category.name}
-                          style={styles.chip}>
-
-                          {category.name}
-
-                        </Chip>
-                      </Link>
-                    </Col>
-                  })}
-                  <Col xs={3}>
-                    <Link to="/"><Chip style={styles.chip}>all</Chip></Link>
-                  </Col>
-                </Row>
-
+              <Col xs={3}>
+                <Link to="/"><FlatButton label="Home"/></Link>
               </Col>
+              {this.props.categories.map((category) => {
+                return <Col key={category.name} xs={3}>
+                  <Link to={category.name}>
+                    <FlatButton label={category.name}/>
+                  </Link>
+                </Col>
+              })}
+
             </Row>
+
           </Col>
+        </Card>
       )
 
     }

@@ -44,7 +44,7 @@ export class CommentList extends Component {
     return (
       <Row>
         <Col xs={12}>
-          <h4>Comments</h4>
+          <h3>Comments</h3>
           {
             this.props.comments.filter((comment) => !comment.deleted)
             .map((comment) => <Comment key={comment.id}

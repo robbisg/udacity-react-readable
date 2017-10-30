@@ -1,5 +1,6 @@
 import { ADD_POST, FETCH_POSTS, READ_POST, DELETE_POST, UPDATE_POST, UPVOTE_POST, DOWNVOTE_POST } from '../actions/posts'
 import { POST_LOADING, SERVER_ERROR} from '../actions/posts'
+import { ADD_COMMENT, DELETE_COMMENT } from '../actions/comments'
 import { combineReducers } from 'redux'
 import { comments, commentLoading } from './comments'
 import { categories, categoryLoading } from './categories'
@@ -85,6 +86,28 @@ export function posts(state={}, action) {
     case READ_POST:
       return arrayToObject([action.data])
 
+
+    case ADD_COMMENT:
+      return Object.assign({}, state, {
+        ...state,
+        [action.parentId]:
+          {
+            ...state[action.parentId],
+            commentCount: state[action.parentId].commentCount + 1,
+          }
+
+      })
+
+      case DELETE_COMMENT:
+        return Object.assign({}, state, {
+          ...state,
+          [action.parentId]:
+            {
+              ...state[action.parentId],
+              commentCount: state[action.parentId].commentCount - 1,
+            }
+
+        })
 
     default:
       return state

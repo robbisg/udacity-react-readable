@@ -3,6 +3,7 @@ import { Row, Col } from 'react-flexbox-grid';
 import { PostPage, PostActions } from './Post'
 import { readPost,
          addPost,
+         fetchPosts,
          downVotePost,
          upVotePost,
          deletePost,
@@ -10,16 +11,15 @@ import { readPost,
 import { fetchCategories } from '../actions/categories'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import LinearProgress from 'material-ui/LinearProgress';
 
 class PostContainer extends Component{
 
 
   componentWillMount() {
-
-    this.props.readPost(this.props.postId)
+    console.log(this.props.postId)
+    this.props.fetchPosts()
     this.props.fetchCategories()
-    //console.log(this.props)
+    console.log(this.props)
   }
 
 
@@ -29,19 +29,31 @@ class PostContainer extends Component{
   }
 
   render() {
-    //console.log(this.props)
+    console.log(this.props)
 
-    const currentPost = this.props.post.pop()
+
+
+    if (this.props.postLoading){
+      <p>Loading...</p>
+    }
+
+    console.log(this.props)
+
+
     return (
 
       <Row>
         <Col xs={12}>
-          <PostActions
-            addPost={this.addPost}
-            categories={this.props.categories}
-          />
+          <Row style={{margin:"15px"}}>
+            <Col xs={12}>
+              <PostActions
+                addPost={this.addPost}
+                categories={this.props.categories}
+              />
+            </Col>
+          </Row>
           <PostPage
-            post={currentPost}
+            post={this.props.post[this.props.postId]}
             upVote={this.props.upVotePost}
             downVote={this.props.downVotePost}
             edit={this.props.updatePost}
@@ -56,7 +68,7 @@ class PostContainer extends Component{
 
 function mapStateToProps (state) {
   return {
-    post: Object.keys(state.posts).map((k) => state.posts[k]),
+    post: state.posts,
     postLoading: state.postLoading,
     categories: state.categories
   }
@@ -65,6 +77,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     readPost: (id) => dispatch(readPost(id)),
+    fetchPosts: () => dispatch(fetchPosts()),
     addPost: (title, body, owner, category) => dispatch(addPost(title, body, owner, category)),
     upVotePost: (id) => dispatch(upVotePost(id)),
     downVotePost: (id) => dispatch(downVotePost(id)),

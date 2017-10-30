@@ -57,11 +57,11 @@ export function deleteComment(commentId) {
         },
         error => dispatch(serverError())
       )
-      .then(() =>{
+      .then((data) =>{
         dispatch(
           {
             type: DELETE_COMMENT,
-            commentId: commentId
+            ...data
           }
 
         )}

@@ -37,9 +37,9 @@ export function comments(state={}, action) {
     case DELETE_COMMENT:
       return Object.assign({}, state, {
         ...state,
-        [action.commentId]:
+        [action.id]:
           {
-            ...state[action.commentId],
+            ...state[action.id],
             deleted: true
           }
 

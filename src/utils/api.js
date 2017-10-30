@@ -198,13 +198,17 @@ USAGE:
 Used for voting on a comment.
 */
 
-export const voteComment = (commentId) =>
+export const voteComment = (commentId, option) =>
   fetch(`${api}/comments/${commentId}`, {
     method: 'POST',
     headers: {
       ...headers,
       'Content-Type': 'application/json'
-    }
+    },
+    body: JSON.stringify(
+      {
+        option,
+      })
   })
 
 /*
