@@ -90,11 +90,12 @@ export class PostPage extends Component {
 
   render (){
     console.log(this.props)
-    if (this.props.post === {}){
-      <div>
-        <p> Post has been deleted.</p>
-        <Link to="/">Go Back</Link>
-      </div>
+
+    if (this.props.post.length === 0){
+      console.log("I'm here")
+      return(
+        <DeletePostModal history={this.props.history} isVisible={true}/>
+          )
     }
 
     const post = this.props.post
@@ -200,6 +201,37 @@ export class EditPostModal extends Component {
 
 }
 
+export class DeletePostModal extends Component {
+
+
+  showModal = () => {
+    this.setState({isVisible: !this.props.isVisible});
+    this.props.history.push("/")
+  }
+
+
+  render() {
+    const actions = [
+        <FlatButton
+          label="Ok"
+          primary={true}
+          onClick={() => this.showModal()}
+        />,
+      ];
+
+    return (
+      <Dialog
+        title="Error"
+        modal={false}
+        actions={actions}
+        open={this.props.isVisible}
+        onRequestClose={() => this.showModal()}
+      >
+        The post has been deleted!
+      </Dialog>
+    );
+  }
+}
 
 export class AddPostModal extends Component {
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col } from 'react-flexbox-grid';
-import { PostPage, PostActions } from './Post'
+import { PostPage, PostActions, DeletePostModal } from './Post'
 import { readPost,
          addPost,
          fetchPosts,
@@ -11,6 +11,7 @@ import { readPost,
 import { fetchCategories } from '../actions/categories'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 class PostContainer extends Component{
 
@@ -31,13 +32,13 @@ class PostContainer extends Component{
   render() {
     console.log(this.props)
 
+    const posts = this.props.posts.filter((post) => post.id === this.props.postId)
 
-
-    if (this.props.postLoading){
-      <p>Loading...</p>
+    if (posts.length === 0){
+      return(
+        <DeletePostModal history={this.props.history} isVisible={true}/>
+          )
     }
-
-    console.log(this.props)
 
 
     return (
@@ -52,7 +53,7 @@ class PostContainer extends Component{
               />
             </Col>
           </Row>
-          {this.props.post.filter((post) => post.id === this.props.postId).map((post) =>
+          {posts.map((post) =>
             <PostPage
               post={post}
               upVote={this.props.upVotePost}
@@ -70,7 +71,7 @@ class PostContainer extends Component{
 
 function mapStateToProps (state) {
   return {
-    post: Object.keys(state.posts).map((k) => state.posts[k]).filter((p) => !p.deleted),
+    posts: Object.keys(state.posts).map((k) => state.posts[k]).filter((p) => !p.deleted),
     postLoading: state.postLoading,
     categories: state.categories
   }
