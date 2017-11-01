@@ -142,6 +142,7 @@ export class AddComment extends Component {
     event.preventDefault()
     const { comment, author } = this.state
     this.props.addComment(comment, author, this.props.id)
+    this.setState({comment:'', author:''})
 
   }
 

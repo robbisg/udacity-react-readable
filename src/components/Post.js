@@ -77,6 +77,16 @@ export class PostPage extends Component {
     return datevalues
   }
 
+  static defaultProps = {
+  post: {
+    id: '',
+    category: '',
+    title: '',
+    timestamp: '',
+    commentCount: ''
+  },
+};
+
 
   render (){
     console.log(this.props)

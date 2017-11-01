@@ -14,7 +14,7 @@ import '../App.css';
 
 class App extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchCategories()
   }
 
@@ -26,7 +26,7 @@ class App extends Component {
       <div className="app">
         <Grid>
           <Category categories={this.props.categories}/>
-          
+
           <Route exact path="/" render={ ({history}) =>
             <Home
               history={history}
