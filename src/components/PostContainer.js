@@ -52,14 +52,16 @@ class PostContainer extends Component{
               />
             </Col>
           </Row>
-          <PostPage
-            post={this.props.post[this.props.postId]}
-            upVote={this.props.upVotePost}
-            downVote={this.props.downVotePost}
-            edit={this.props.updatePost}
-            delete={this.props.deletePost}
-            history={this.props.history}
-          />
+          {this.props.post.filter((post) => post.id === this.props.postId).map((post) =>
+            <PostPage
+              post={post}
+              upVote={this.props.upVotePost}
+              downVote={this.props.downVotePost}
+              edit={this.props.updatePost}
+              delete={this.props.deletePost}
+              history={this.props.history}
+            />)}
+
         </Col>
       </Row>
     )
@@ -68,7 +70,7 @@ class PostContainer extends Component{
 
 function mapStateToProps (state) {
   return {
-    post: state.posts,
+    post: Object.keys(state.posts).map((k) => state.posts[k]).filter((p) => !p.deleted),
     postLoading: state.postLoading,
     categories: state.categories
   }
